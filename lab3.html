@@ -1,0 +1,353 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Data Simulation</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        #operations h4, #instructions h4{
+            text-decoration: underline;
+        }
+
+        body {
+            background-color: rgb(204,255,255);
+            
+        }
+
+        #scale {
+            width: 70%;
+            height: 70%;
+        }
+
+        #title{
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+
+        h1, h2, h3, h4 {
+            color: rgb(0,0,255);
+        }
+
+        #grid {
+				display: grid;
+				grid-template-columns: auto auto;
+				grid-gap: 100px ;
+				margin: 15px;
+			}
+
+        #operations{
+            grid-column: 1;
+			grid-row: 1;
+        }    
+
+        #instructions{
+            grid-column: 1;
+			grid-row: 2;
+        }
+
+        #scale{
+            text-align: center;
+            grid-column: 2;
+			grid-row: 1/ span 2  ;
+            
+        }
+
+        #buttons {
+            text-align: center;
+            
+        }
+
+
+        #buttons li{
+            list-style: none;
+            padding: 3px;
+        }
+
+        span{
+            font-size: large;
+            padding-left: 15px;
+        }
+
+        
+        #tareButton:hover{
+            cursor: pointer;
+        }
+
+        #massButton:hover{
+            cursor: pointer;
+        }
+
+
+        
+        footer{
+            text-align: center;
+        }
+        
+
+    
+
+        
+
+
+        
+    </style>
+
+</head>
+
+<body>
+    <div id="title">
+        <h2>Statistical Analysis of Weights</h2>
+        <h2>of</h2>
+        <h2>Randomly-Selected Glass Beads</h2>
+        
+    </div>
+    <div id="grid">
+
+    <div id="operations">
+        <h4>OPERATIONS</h4>
+        <ol>
+            <li>The SELECT A COLOR dropdown list lets you select the color</li>
+            <li>The DELIVER button adds the selected number of beads for mass measurement.</li>
+            <li>The DUMP BEADS button removes all beads that have been delivered and prepares a new selection of randomly selected beads.</li>
+            <li>The TARE bar resets the balance reading to zero.</li>
+            <li>The INCREASE/DECREASE DELIVERY button increases/decreases the amount deliverable</li>
+        </ol>
+
+    </div>
+
+    
+
+    <div id="instructions">
+        <h4>MASS MEASUREMENTS</h4>
+        <ol>
+            <li>Select a color</li>
+            <li>DUMP BEADS.</li>
+            <li>Click on the TARE button on the balance.</li>
+            <li>DELIVER the desired number of beads.</li>
+            <li>Record the balance reading.</li>
+            <li>TARE the balance</li>
+            <li>Repeat steps 2-5</li>
+        </ol>
+    </div>
+
+    <div id="scale">
+        <svg id="mySVG"width="400px" height="200px">
+            <image x="0" y="0" width="400px" height="200px" xlink:href="scale.jpg" />
+
+            <!--Measure Weight Button  -->
+            <!--rect x="40px" y="112px" width="75px" height="30px" fill="black" />
+            <text id="massButton" x="50px" y="132px" font-size="18" fill="white">MASS</text-->
+
+
+            <!-- TARE Button  -->
+            <rect x="285px" y="112px" width="75px" height="30px" fill="black" />
+            <text id="tareButton" x="300px" y="132px" font-size="18" fill="white">TARE</text>
+
+            <!-- Mass reading button  -->
+            <rect x="160px" y="112px" width="75px" height="30px" fill="Green" />
+            <text  id="mass" x="180px" y="132px" font-size="18" fill="black">0.000</text>
+            
+        </svg>
+
+        
+        <div id="buttons">
+        
+            <select id="colorSelect">
+                <option value="">SELECT A COLOR</option>
+                <option value="LB">Light Blue</option>
+                <option value="YG">Yellow-Green</option>
+                <option value="B">Blue</option>
+                <option value="BG">Blue-Green</option>
+                <option value="P">Pink</option>
+                <option value="Y">Yellow</option>
+            </select>
+    
+            <ul>
+                <li><button id="deliverButton">DELIVER</button> ---<span id="deliverValue">1</span></li>
+                <li><button id="increase">INCREASE DELIVERY</button></li>
+                <li><button id="decrease">DECREASE DELIVERY</button></li>
+                <li></li>
+                <li><button id="dumpButton">DUMP BEADS</button></li>
+                
+            </ul>
+            
+        </div>
+        
+        
+    
+    </div>
+
+    
+</div>
+<footer>
+    <h4>copyright 2006 Gary L Bertrand</h4>
+</footer>
+
+</body>
+
+<script>
+    
+
+    beads = [{name: "Light Blue",
+             color: "LB",
+             weight: 0.311,
+             std: 0.089,
+             cssColor: "#87cefa"
+             },
+             {name: "Yellow-Green",
+             color: "YG",
+             weight: 0.45,
+             std: 0.089,
+             cssColor: "#9ACD32"
+             },
+             {name: "blue",
+             color: "B",
+             weight: 0.38,
+             std: 0.105,
+             cssColor: "#0000FF"
+             },
+             {name:"Blue-Green",
+             color: "BG",
+             weight: 0.43,
+             std: 0.12,
+             cssColor: "#0d98ba"
+             },
+             {name: "Pink",
+             color: "P",
+             weight: 0.35,
+             std: 0.095,
+             cssColor: "#FFC0CB"
+             },
+             {name: "Yellow",
+             color: "Y",
+             weight: 0.27,
+             std: 0.027,
+             cssColor: "#FFFF00"
+            }]
+
+            let selectElement = document.getElementById("colorSelect");
+            color = selectElement.value;
+            let weight = Math.random();
+            let deliver = 1;
+            let formattedWeight = weight.toFixed(3);
+            document.getElementById("mass").innerHTML = formattedWeight;
+            let HasBead = false;
+
+            //Function to draw circles
+            function addCircle(cssColor) {
+                // Create a new circle element
+                var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+
+                // Set circle attributes (e.g., radius, position, color)
+                circle.setAttribute("cx", (Math.random() * 150)+120); // x-coordinate
+                circle.setAttribute("cy", Math.random() * 40 + 30); // y-coordinate
+                circle.setAttribute("r", 5); // radius
+                circle.setAttribute("fill", cssColor); // fill color
+                circle.setAttribute("stroke", "black"); // stroke color
+
+                // Add the circle to the SVG
+                document.getElementById("mySVG").appendChild(circle);
+            }
+
+            function removeCircles() {
+                var svg = document.getElementById("mySVG");
+
+                // Select all circle elements and remove them
+                var circles = svg.querySelectorAll('circle');
+                circles.forEach(function(circle) {
+                    svg.removeChild(circle);
+                });
+            }
+
+            function generateNormalRandom(mean, stdDev) {
+                var u1 = Math.random();
+                var u2 = Math.random();
+
+                var z0 = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+
+                // Scale and shift the result to the desired mean and standard deviation
+                var normalRandom = z0 * stdDev + mean;
+
+                return normalRandom;
+            }
+
+            document.getElementById("increase").addEventListener("click", function(){
+                if(deliver < 10) {
+                    deliver = deliver + 1;
+                    document.getElementById("deliverValue").innerHTML = deliver;
+                }
+            });
+
+            document.getElementById("decrease").addEventListener("click", function(){
+                if(deliver > 1) {
+                    deliver = deliver - 1;
+                    document.getElementById("deliverValue").innerHTML = deliver;
+                }
+            });
+
+
+            document.getElementById("tareButton").addEventListener("click", function(){
+                weight = 0.000;
+                let formattedWeight = weight.toFixed(3);
+                document.getElementById("mass").innerHTML = formattedWeight;
+            });
+
+            document.getElementById("colorSelect").addEventListener("change", function(){
+                color = selectElement.value;
+            });
+
+            document.getElementById("deliverButton").addEventListener("click",function(){
+                if(color == "")
+                {
+                    alert("You must select a color");
+                }
+                
+                else {
+                    HasBead = true;
+                    index = 0;
+                    for(j = 0; j < beads.length; j++) {
+                        if(beads[j].color == color){
+                            index=j;
+                        }
+                    }
+                    
+                    bead = beads[index];
+                    for(i = 0; i < deliver; i++){
+                        addCircle(bead.cssColor);
+                        //Gets me a random distributed normal value within the beads range
+                        var randomValue = generateNormalRandom(bead.weight, bead.std);
+                        weight = weight + randomValue;
+                    } 
+                    formattedWeight = weight.toFixed(3);
+                    document.getElementById("mass").innerHTML = formattedWeight;
+
+                }
+            });
+
+            document.getElementById("dumpButton").addEventListener("click", function(){
+                if(HasBead) {
+                    removeCircles();
+                    weight = Math.random() * 0.01;
+                    formattedWeight = weight.toFixed(3);
+                    document.getElementById("mass").innerHTML = formattedWeight;
+                    HasBead = false;
+                } 
+                
+            });
+
+            
+
+            
+
+            
+
+            
+
+
+</script>
+
+</html>
