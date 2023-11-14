@@ -148,8 +148,9 @@
             <text id="tareButton" x="300px" y="132px" font-size="18" fill="white">TARE</text>
 
             <!-- Mass reading button  -->
-            <rect x="160px" y="112px" width="75px" height="30px" fill="Green" />
+            <rect x="140px" y="112px" width="120px" height="30px" fill="Green" />
             <text  id="mass" x="180px" y="132px" font-size="18" fill="black">0.000</text>
+            <text  id="mass" x="240px" y="132px" font-size="18" fill="black">g</text>
             
         </svg>
 
@@ -167,7 +168,7 @@
             </select>
     
             <ul>
-                <li><button id="deliverButton">DELIVER</button> ---<span id="deliverValue">1</span></li>
+                <li><button id="deliverButton">DELIVER</button> ---<span id="deliverValue">10</span></li>
                 <li><button id="increase">INCREASE DELIVERY</button></li>
                 <li><button id="decrease">DECREASE DELIVERY</button></li>
                 <li></li>
@@ -232,7 +233,7 @@
             let selectElement = document.getElementById("colorSelect");
             color = selectElement.value;
             let weight = Math.random();
-            let deliver = 1;
+            let deliver = 10;
             let formattedWeight = weight.toFixed(3);
             document.getElementById("mass").innerHTML = formattedWeight;
             let HasBead = false;
