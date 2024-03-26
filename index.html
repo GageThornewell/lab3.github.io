@@ -81,9 +81,9 @@
         }
 
         .button-group {
-      display: flex;
-      gap: 10px;
-    }
+            display: flex;
+            gap: 10px;
+        }
 
     .button {
       padding: 10px 15px;
@@ -314,16 +314,27 @@
             }
 
             function generateNormalRandom(mean, stdDev) {
-                var u1 = Math.random();
-                var u2 = Math.random();
+                var isValid = false;
+                var normalRandom;
 
-                var z0 = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+                while (!isValid) {
+                    var u1 = Math.random();
+                    var u2 = Math.random();
 
-                // Scale and shift the result to the desired mean and standard deviation
-                var normalRandom = z0 * stdDev + mean;
+                    var z0 = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+
+                    // Scale and shift the result to the desired mean and standard deviation
+                    normalRandom = z0 * stdDev + mean;
+
+                    // Check if the generated number falls within 2 standard deviations of the mean
+                    if (normalRandom >= mean - 2 * stdDev && normalRandom <= mean + 2 * stdDev) {
+                        isValid = true;
+                    }
+                }
 
                 return normalRandom;
             }
+
 
             document.getElementById("increase").addEventListener("click", function(){
                 if(deliver < 10) {
